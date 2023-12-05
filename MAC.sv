@@ -23,7 +23,7 @@ module  MAC #(parameter inte_width = 2,parameter sign_bit = 1,parameter frac_wid
 (
     input logic signed [sign_bit+inte_width+frac_width-1 : 0] x1,//inputs, now its 8bit long with 1 sign bit,2 integer bits ,5 fractional bits 
     input logic signed [sign_bit+inte_width+frac_width-1 : 0] w1,//weights
-    input logic signed [sign_bit+inte_width+frac_width-1 : 0] b1,//bias ����
+    input logic signed [sign_bit+inte_width+frac_width-1 : 0] b1,//bias 
 
     output logic signed [sign_bit+inte_width+frac_width-1 : 0] result
 );
@@ -48,19 +48,18 @@ always_comb begin
     extend_w1 = w1;
    
     multi_result = extend_x1 * extend_w1; 
-    //����������ǲ��룬format here is inte_width = 3,sign bit = 1,frac_width = 4 so if we want to add this result Q4.4 with bias Q2.2
+    //format here is inte_width = 3,sign bit = 1,frac_width = 4 so if we want to add this result Q4.4 with bias Q2.2
     //so we have to move the bits
      extend_b1 = b1;
      extend_b1 = extend_b1 << frac_width;
 
 
-    extend_result = extend_b1 + multi_result; //8λ����
+    extend_result = extend_b1 + multi_result; 
    
     //extend_result = extend_result >> frac_width;
 end
 
 assign result = {extend_result[extend_width-1],extend_result[2*frac_width + inte_width-1: 2*frac_width],extend_result[2*frac_width-1:frac_width]};
-//����
 
 
 
